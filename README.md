@@ -8,7 +8,9 @@
 `pg_ecdsa_verify` is a PostgreSQL extension for verifying ECDSA signatures,
 implemented in Rust. It leverages
 the [pgrx](https://github.com/pgcentralfoundation/pgrx) framework for creating
-PostgreSQL extensions in Rust.
+PostgreSQL extensions in Rust. Is uses the
+[ecdsa_verify](https://github.com/joelonsql/ecdsa_verify) Rust crate by the
+same author for the core ECDSA signature verification logic.
 
 This extension aims to be a compatible drop-in replacement for the C-based
 [pg-ecdsa](https://github.com/ameensol/pg-ecdsa), with the same `ecdsa_verify()`

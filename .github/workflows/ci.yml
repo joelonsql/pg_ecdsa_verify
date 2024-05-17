@@ -7,6 +7,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -20,14 +34,14 @@ jobs:
     - name: Install Dependencies
       run: sudo apt-get update && sudo apt-get install -y libclang-dev build-essential libreadline-dev zlib1g-dev flex bison libxml2-dev libxslt-dev libssl-dev libxml2-utils xsltproc ccache pkg-config
 
-    - name: Install PostgreSQL Client
-      run: sudo apt-get install -y postgresql-client
+    - name: Install PostgreSQL Client and Development Files
+      run: sudo apt-get install -y postgresql-client postgresql-server-dev-16
 
     - name: Install pgrx
       run: cargo install --locked cargo-pgrx
 
     - name: Initialize pgrx
-      run: cargo pgrx init --pg16 download
+      run: cargo pgrx init --pg16=$(which pg_config)
 
     - name: Build and test
       env:
@@ -35,4 +49,4 @@ jobs:
         PGPASSWORD: password
         PGHOST: localhost
         PGPORT: 5432
-      run: cargo pgrx test pg16
+      run: cargo pgrx test pg16 --runas postgres --pgdata=/tmp/pgdata

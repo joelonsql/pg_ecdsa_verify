@@ -1,0 +1,20 @@
+# Ignore macOS specific files
+.DS_Store
+._*
+
+# Ignore IDE specific files
+.idea/
+*.iml
+
+# Ignore target directory
+/target
+
+# Ignore backup files
+**/*.rs.bk
+
+# Ignore Cargo lock file
+Cargo.lock
+
+# Ignore other temporary files and directories
+.cargo/
+

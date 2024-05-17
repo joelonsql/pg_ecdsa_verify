@@ -1,0 +1,5 @@
+comment = 'ECDSA Signature Verification'
+default_version = '@CARGO_VERSION@'
+module_pathname = '$libdir/pg_ecdsa_verify'
+relocatable = false
+superuser = true

@@ -16,6 +16,19 @@ This extension aims to be a compatible drop-in replacement for the C-based
 [pg-ecdsa](https://github.com/ameensol/pg-ecdsa), with the same `ecdsa_verify()`
 function signature for ease of integration.
 
+## Why Only Verification?
+
+By limiting the scope to verification, the extension remains simpler and easier
+to implement and audit. Since verification only involves public keys and no
+private keys, it is inherently secure against side-channel attacks and much
+easier to implement correctly than the signature generation algorithm.
+
+The typical use case would be a client needing to authenticate against a server
+where the public keys are stored in a PostgreSQL server. In this scenario, only
+the signature verification algorithm is needed on the server side. This is why
+the `pg_ecdsa_verify` crate only exposes the ECDSA signature verification
+algorithm.
+
 ## Features
 
 - **Compatibility**: Supports multiple PostgreSQL versions (11 to 16).

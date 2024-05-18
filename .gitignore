@@ -14,7 +14,3 @@
 
 # Ignore Cargo lock file
 Cargo.lock
-
-# Ignore other temporary files and directories
-.cargo/
-

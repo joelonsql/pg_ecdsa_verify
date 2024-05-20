@@ -1,6 +1,6 @@
 [package]
 name = "pg_ecdsa_verify"
-version = "1.1.1"
+version = "1.1.2"
 authors = ["Joel Jakobsson <github@compiler.org>"]
 edition = "2021"
 description = "A PostgreSQL extension for ECDSA signature verification."

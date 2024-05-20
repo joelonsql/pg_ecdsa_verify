@@ -110,14 +110,13 @@ The extension provides a single SQL function `ecdsa_verify` to verify ECDSA sign
 #### Function Signature
 
 ```sql
-\df ecdsa_verify
-List of functions
--[ RECORD 1 ]-------+-------------------------------------------------------------------------------------
-Schema              | public
-Name                | ecdsa_verify
-Result data type    | boolean
-Argument data types | public_key bytea, input_data bytea, signature bytea, hash_func text, curve_name text
-Type                | func
+\dx+ pg_ecdsa_verify
+             Objects in extension "pg_ecdsa_verify"
+                       Object description
+-----------------------------------------------------------------
+ function ecdsa_verify.ecdsa_verify(bytea,bytea,bytea,text,text)
+ schema ecdsa_verify
+(2 rows)
 ```
 
 #### Example Usage
@@ -129,7 +128,7 @@ psql
 ```sql
 CREATE EXTENSION pg_ecdsa_verify;
 
-SELECT ecdsa_verify(
+SELECT ecdsa_verify.ecdsa_verify(
     public_key := '\x7fa92dd0666eee7c13ddb7b6249b0c8f9fba4360857c4e15d2fc634a2b5a1f8fdb9983b319469d35e719a3b93e1ac292854cd3ff2ad50898681b0a32ffbcbc6a'::bytea,
     input_data := '\x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d9763010000000117bd119a942a38b92bfc3b90a21f7eaa37fe1a7fa0abe27fd15dd20683b14d54'::bytea,
     signature := '\x10fab01307f3eed59bc11601265efaab524b50d017bd9cdfeec4f61b01caa8d669c6e9f8d9bcbdba4e5478cb75b084332d51b0be2c21701b157c7c87abb98057'::bytea,
@@ -197,9 +196,9 @@ The benchmarks were run on an Intel Core i9-14900K. The results are as follows:
 ```
 $ cargo bench
 
-     Running benches/ecdsa_verify.rs (target/release/deps/ecdsa_verify-0730a3fd1dcb6289)
+     Running benches/ecdsa_verify.rs (target/release/deps/ecdsa_verify-c81f65e672ca3ad2)
 
-test bench_ecdsa_verify ... bench:     846,886 ns/iter (+/- 11,987)
+test bench_ecdsa_verify ... bench:     840,849 ns/iter (+/- 11,204)
 ```
 
 ## License

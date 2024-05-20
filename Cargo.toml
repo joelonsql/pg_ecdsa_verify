@@ -1,6 +1,6 @@
 [package]
 name = "pg_ecdsa_verify"
-version = "1.0.2"
+version = "1.1.0"
 authors = ["Joel Jakobsson <github@compiler.org>"]
 edition = "2021"
 description = "A PostgreSQL extension for ECDSA signature verification."
@@ -25,15 +25,15 @@ pg16 = ["pgrx/pg16", "pgrx-tests/pg16" ]
 pg_test = []
 
 [dependencies]
-pgrx = "=0.11"
+pgrx = "=0.11.4"
 num-bigint = "0.4"
 num-traits = "0.2"
 hex = "0.4"
 sha2 = "0.10"
-ecdsa_verify = "1.1"
+ecdsa_verify_lib = { version = "1.1", package = "ecdsa_verify" }
 
 [dev-dependencies]
-pgrx-tests = "=0.11"
+pgrx-tests = "=0.11.4"
 
 [profile.dev]
 panic = "unwind"

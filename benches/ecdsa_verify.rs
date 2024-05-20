@@ -14,6 +14,6 @@ fn bench_ecdsa_verify(b: &mut Bencher) {
     let curve_name = "secp256r1";
 
     b.iter(|| {
-        assert!(ecdsa_verify(&public_key, &input_data, &signature, hash_func, curve_name));
+        assert!(ecdsa_verify::ecdsa_verify(&public_key, &input_data, &signature, hash_func, curve_name));
     });
 }

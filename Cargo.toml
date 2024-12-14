@@ -15,17 +15,17 @@ categories = ["cryptography", "database"]
 crate-type = ["cdylib", "rlib"]
 
 [features]
-default = ["pg16"]
-pg11 = ["pgrx/pg11", "pgrx-tests/pg11" ]
+default = ["pg17"]
 pg12 = ["pgrx/pg12", "pgrx-tests/pg12" ]
 pg13 = ["pgrx/pg13", "pgrx-tests/pg13" ]
 pg14 = ["pgrx/pg14", "pgrx-tests/pg14" ]
 pg15 = ["pgrx/pg15", "pgrx-tests/pg15" ]
 pg16 = ["pgrx/pg16", "pgrx-tests/pg16" ]
+pg17 = ["pgrx/pg17", "pgrx-tests/pg17" ]
 pg_test = []
 
 [dependencies]
-pgrx = "=0.11.4"
+pgrx = "=0.12.9"
 num-bigint = "0.4"
 num-traits = "0.2"
 hex = "0.4"
@@ -33,7 +33,7 @@ sha2 = "0.10"
 ecdsa_verify_lib = { version = "1.1", package = "ecdsa_verify" }
 
 [dev-dependencies]
-pgrx-tests = "=0.11.4"
+pgrx-tests = "=0.12.9"
 
 [profile.dev]
 panic = "unwind"
@@ -46,3 +46,7 @@ codegen-units = 1
 
 [[bench]]
 name = "ecdsa_verify"
+
+[[bin]]
+name = "pgrx_embed_pg_ecdsa_verify"
+path = "./src/bin/pgrx_embed.rs"

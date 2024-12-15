@@ -9,7 +9,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:14
+        image: postgres:16
         ports:
           - 5432:5432
         env:
@@ -35,13 +35,13 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y libclang-dev build-essential pkg-config
 
     - name: Install PostgreSQL Client and Development Files
-      run: sudo apt-get install -y postgresql-client postgresql-server-dev-14
+      run: sudo apt-get install -y postgresql-client postgresql-server-dev-16
 
     - name: Install pgrx
       run: cargo install --locked cargo-pgrx
 
     - name: Initialize pgrx
-      run: cargo pgrx init --pg14=$(which pg_config)
+      run: cargo pgrx init --pg16=$(which pg_config)
 
     - name: Build and test
       env:
@@ -49,4 +49,4 @@ jobs:
         PGPASSWORD: password
         PGHOST: localhost
         PGPORT: 5432
-      run: cargo pgrx test pg14 --runas postgres --pgdata=/tmp/pgdata
+      run: cargo pgrx test pg16 --runas postgres --pgdata=/tmp/pgdata

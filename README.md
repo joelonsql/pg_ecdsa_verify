@@ -1,6 +1,6 @@
 # `pg_ecdsa_verify`: A PostgreSQL Extension for ECDSA Signature Verification
 
-![CI](https://github.com/joelonsql/pg_ecdsa_verify/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/joelonsql/pg_ecdsa_verify/actions/workflows/test.yml/badge.svg)
 [![Crates.io](https://img.shields.io/crates/v/pg_ecdsa_verify.svg)](https://crates.io/crates/pg_ecdsa_verify)
 
 ## Overview

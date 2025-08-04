@@ -1,0 +1,92 @@
+name: Test pg_ecdsa_verify
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+env:
+  RUST_BACKTRACE: 1
+  CARGO_INCREMENTAL: "false"
+  PG_VER: 17
+
+jobs:
+  test:
+    name: PostgreSQL 17 Tests
+    runs-on: ubuntu-22.04
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up prerequisites and environment
+        run: |
+          sudo apt-get update -y -qq --fix-missing
+          
+          echo "----- Remove old postgres -----"
+          sudo apt remove -y '^postgres.*' '^libpq.*' '^clang.*' '^llvm.*' '^libclang.*' '^libllvm.*' '^mono-llvm.*'
+          
+          echo "----- Install system dependencies -----"
+          sudo apt-get install -y \
+            build-essential \
+            llvm-14-dev libclang-14-dev clang-14 \
+            gcc \
+            libssl-dev \
+            libz-dev \
+            make \
+            pkg-config \
+            zlib1g-dev \
+            wget \
+            gnupg
+
+      - name: Setup PostgreSQL apt repository
+        run: |
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt-get update -y -qq --fix-missing
+
+      - name: Install PostgreSQL 17
+        run: |
+          sudo apt-get install -y \
+            postgresql-$PG_VER \
+            postgresql-server-dev-$PG_VER
+
+      - name: Set up PostgreSQL permissions
+        run: |
+          sudo chmod a+rwx `/usr/lib/postgresql/$PG_VER/bin/pg_config --pkglibdir` `/usr/lib/postgresql/$PG_VER/bin/pg_config --sharedir`/extension /var/run/postgresql/
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Cargo dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-
+
+      - name: Install cargo-pgrx
+        run: |
+          cargo install cargo-pgrx --locked
+
+      - name: Initialize pgrx
+        run: |
+          cargo pgrx init --pg$PG_VER /usr/lib/postgresql/$PG_VER/bin/pg_config
+
+      - name: Run tests
+        run: |
+          cargo test --features "pg$PG_VER" --no-default-features
+
+      - name: Verify pg_config
+        run: |
+          echo "PostgreSQL version:"
+          pg_config --version
+          echo "PostgreSQL lib directory:"
+          pg_config --pkglibdir
+          echo "PostgreSQL extension directory:"
+          pg_config --sharedir
